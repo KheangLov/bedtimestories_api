@@ -7,6 +7,7 @@ module.exports = {
       let page = parseInt(_.get(req.query, 'page')) || 1;
       let date = _.get(req.query, 'date');
       const count = _.get(req.query, 'count');
+      let status = _.get(req.query, 'status');
 
       if (perPage > custom.QUERY.MAX_PER_PAGE) {
         perPage = custom.QUERY.MAX_PER_PAGE;
@@ -22,7 +23,15 @@ module.exports = {
         date = false;
       }
 
-      const total = await Story.count();
+      let byStatus = {};
+
+      if (status) {
+        byStatus = {
+          status
+        };
+      }
+
+      const total = await Story.count(byStatus);
       // If we want to count the records only
       if (count && count.toLowerCase() === 'true') {
         return UtilService.response(total, true);

@@ -12,6 +12,18 @@ module.exports = {
 
   create: async (req, res) => {
     res.send(await UserService.createUser(req));
+  },
+
+  detail: async (req, res) => {
+    res.send(await UserService.userDetail(req));
+  },
+
+  auth: async (req, res) => {
+    res.send(await UserService.userAuth(req));
+  },
+
+  update: async (req, res) => {
+    res.send(await UserService.updateUser(req));
   }
 
 };
