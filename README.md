@@ -26,4 +26,14 @@ Note:  Generators are usually run using the globally-installed `sails` CLI (comm
 
 ### Install
 
-`npm install`
+```
+npm install
+```
+
+### To start project
+
+```
+nodemon --exec sails lift
+```
+
+open `localhost:1337`
