@@ -27,7 +27,9 @@ Note:  Generators are usually run using the globally-installed `sails` CLI (comm
 ### Install
 
 ```
-npm install
+npm install 
+or
+yarn
 ```
 
 ### To start project
