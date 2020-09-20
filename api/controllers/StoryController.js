@@ -16,6 +16,10 @@ module.exports = {
 
   create: async (req, res) => {
     res.send(await StoryService.createStory(req));
+  },
+
+  suggestion: async (req, res) => {
+    res.send(await StoryService.suggestionStory(req));
   }
 
 };

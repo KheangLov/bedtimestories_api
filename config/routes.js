@@ -28,6 +28,7 @@ module.exports.routes = {
   'get /api/v1/user/:id': 'UserController.detail',
   'get /api/v1/categories': 'CategoryController.index',
   'get /api/v1/stories': 'StoryController.index',
+  'get /api/v1/story/:id/suggestion': 'StoryController.suggestion',
   'get /api/v1/story/:id': 'StoryController.detail',
   'post /api/v1/stories': 'StoryController.create',
   'get /api/v1/images': 'ImageController.index',

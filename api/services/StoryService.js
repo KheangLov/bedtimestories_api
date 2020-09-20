@@ -87,7 +87,6 @@ module.exports = {
       const id = req.param('id');
       const result = await Story.find({id}).populate('images').limit(1);
       if (result.length <= 0) {
-        sails.log.debug(result);
         throw(new Error(`Story with #${id}, not found!`));
       }
       return UtilService.response(result, true);
@@ -117,6 +116,26 @@ module.exports = {
     } catch(err) {
       return UtilService.response(err);
     }
-  }
+  },
 
+  suggestionStory: async req => {
+    try {
+      const id = req.param('id');
+      const result = await Story.getDatastore().sendNativeQuery(`SELECT stories.*, categories.name
+        FROM stories
+        INNER JOIN categories
+        ON stories.category_id = categories.id
+        WHERE stories.id != $1
+        LIMIT 5`,
+        [id]
+      );
+
+      if (result.rows.length <= 0) {
+        throw(new Error(`Story with #${id}, not found!`));
+      }
+      return UtilService.response(result.rows, true);
+    } catch(err) {
+      return UtilService.response(err);
+    }
+  }
 };
