@@ -1,4 +1,6 @@
+// const User = require("../models/User");
 const custom = sails.config.custom;
+
 module.exports = {
 
   getUsers: async (req) => {
@@ -26,7 +28,7 @@ module.exports = {
 
         byRole = { role_id: getRole[0].id };
       }
- 
+
       const total = await User.count(byRole);
       // If we want to count the records only
       if (count && count.toLowerCase() === 'true') {
@@ -56,6 +58,7 @@ module.exports = {
 
   createUser: async req => {
     try {
+      sails.log(req);
       const params = req.allParams();
       const errors = [];
       const required = {
@@ -111,7 +114,7 @@ module.exports = {
       if (!username && !password) {
         throw(new Error('Username and password is required!'));
       }
-      const result = await User.getDatastore().sendNativeQuery(`SELECT * FROM users WHERE 
+      const result = await User.getDatastore().sendNativeQuery(`SELECT * FROM users WHERE
         LOWER(fullname) = LOWER($1) AND password = $2`, [username, password]);
       return UtilService.response(result, true);
     } catch(err) {
