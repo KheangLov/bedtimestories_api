@@ -18,20 +18,28 @@ module.exports = {
         });
       }
       req.logIn(user, (err) => {
-        if(err) {res.send(err);}
-        const token = jwt.sign(user, sails.config.secret, {expiresIn: 60 * 60 * 24});
+        if(err) {
+          res.send(err);
+        }
+        const expiresIn = 60 * 60 * 24;
+        const token = jwt.sign(user, sails.config.secret, {
+          expiresIn
+        });
         return res.send({
+          status: true,
           message: info.message,
-          user,
-          token
+          data: user,
+          token: {
+            token,
+            expiresIn
+          }
         });
       });
     })(req, res);
   },
 
-  logout: (req, res) => {
+  logout: (req) => {
     req.logout();
-    res.redirect('/');
   },
 
   register: async (req, res) => {

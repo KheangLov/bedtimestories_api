@@ -13,14 +13,23 @@ passport.deserializeUser((id, cb) => {
 });
 
 passport.use(new LocalStrategy({
-  usernameField: 'username',
+  usernameField: 'email',
   passwordField: 'password'
-}, ((username, password, cb) => {
-  User.findOne({fullname: username}, (err, user) => {
-    if(err) return cb(err);
-    if(!user) return cb(null, false, {message: 'Username not found'});
+}, ((email, password, cb) => {
+  User.findOne({email}, (err, user) => {
+    if(err) {
+      return cb(null, false, { message: err });
+    }
+    if(!user) {
+      return cb(null, false, { message: 'Email not found' });
+    }
     bcrypt.compare(password, user.password, (err, res) => {
-      if(!res) return cb(null, false, { message: 'Invalid Password' });
+      if(err) {
+        return cb(null, false, { message: err });
+      }
+      if(!res) {
+        return cb(null, false, { message: 'Invalid Password' });
+      }
       let userDetails = {
         email: user.email,
         fullname: user.fullname,

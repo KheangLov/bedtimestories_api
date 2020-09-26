@@ -3,11 +3,12 @@ module.exports = {
     const result = {
       status: false
     };
-    if (status === false) {
+    if (!status) {
       result.message = data.message;
       return result;
     }
     result.status = true;
+    result.message = 'Success';
     result.data = data;
     return result;
   }

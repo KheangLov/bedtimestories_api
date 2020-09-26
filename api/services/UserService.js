@@ -58,9 +58,18 @@ module.exports = {
 
   createUser: async req => {
     try {
-      sails.log(req);
       const params = req.allParams();
       const errors = [];
+      const checkIfExisted = await User.find({ email: params.email })
+        .where({
+          or: [{
+            fullname: params.firstname + params.lastname
+          }]
+        });
+      if (checkIfExisted.length) {
+        errors.push(`User already existed!`);
+      }
+
       const required = {
         firstname: {
           name: 'Firstname',
@@ -88,7 +97,7 @@ module.exports = {
         throw(new Error(`${errors.join(', ')}`));
       }
       const create = await User.create(params).fetch();
-      return UtilService.response(create, true);
+      return UtilService.response(_.omit(create, ['password']), true);
     } catch(err) {
       return UtilService.response(err);
     }
